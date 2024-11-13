@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  nodejs-app:
+    image: personal-task-management-api-image
+    build:
+      context: .
+      args:
+        APP_PORT: 3000
+    command: ["node", "app.js"]
