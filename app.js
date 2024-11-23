@@ -7,8 +7,14 @@ const listRoutes = require("./routes/list.routes");
 const taskRoutes = require("./routes/task.routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
+const cors = require("cors");
 
 const app = express();
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const swaggerOptions = {
   definition: {
