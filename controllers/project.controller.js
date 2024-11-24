@@ -1,4 +1,5 @@
 const Project = require("../models/project.model");
+const UUID = require('../utils/uuid.util')
 
 const createProject = async (req, res) => {
   try {
@@ -6,6 +7,7 @@ const createProject = async (req, res) => {
 
     const newProject = await Project.create({
       user_id,
+      project_id: UUID.generateUUID(),
       title,
       description,
     });

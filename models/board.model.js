@@ -8,12 +8,12 @@ class Board extends Model {}
 Board.init(
   {
     board_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
       autoIncrement: true,
     },
     project_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Project,

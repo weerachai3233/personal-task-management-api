@@ -32,7 +32,7 @@ router.post("/", authenticateJWT, BoardController.createBoard);
 
 router.get("/:id", authenticateJWT, BoardController.getBoard);
 router.get("/", authenticateJWT, BoardController.getBoardList);
-router.post("/", authenticateJWT, BoardController.createBoard);
+router.put("/:id", authenticateJWT, BoardController.updateBoard);
 router.delete("/", authenticateJWT, BoardController.createBoard);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Password = require("../utils/password.util");
 const JWT = require("../utils/jwt.util");
+const UUID = require('../utils/uuid.util')
 
 const register = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ const register = async (req, res) => {
     const hashedPassword = await Password.hashPassword(password);
 
     const newUser = await User.create({
+      user_id: UUID.generateUUID(),
       username,
       email,
       password: hashedPassword,

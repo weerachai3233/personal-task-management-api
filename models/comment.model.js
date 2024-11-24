@@ -13,7 +13,7 @@ Comment.init(
       autoIncrement: true,
     },
     task_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Task,
@@ -22,7 +22,7 @@ Comment.init(
       onDelete: "CASCADE",
     },
     user_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,

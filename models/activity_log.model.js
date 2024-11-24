@@ -13,7 +13,7 @@ ActivityLog.init(
       autoIncrement: true,
     },
     project_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Project,
@@ -22,7 +22,7 @@ ActivityLog.init(
       onDelete: "CASCADE",
     },
     user_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,
