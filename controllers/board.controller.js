@@ -2,6 +2,7 @@ const Board = require("../models/board.model");
 const List = require("../models/list.model");
 const Project = require("../models/project.model");
 const Task = require("../models/task.model");
+const { development } = require("../configs/config");
 
 const createBoard = async (req, res) => {
   try {
@@ -31,84 +32,96 @@ const createBoard = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
-const getProjectBoards = async (req, res) => {
+const getBoardList = async (req, res) => {
   try {
     const { project_id } = req.query;
-
+    if (!project_id) {
+      return res.status(401).json({
+        message: "project_id is required.",
+      });
+    }
     const boards = await Board.findAll({
-      where: { project_id: project_id },
+      where: {
+        project_id: project_id,
+      },
     });
-
-    if (!boards || boards.length === 0) {
-      return res.status(404).json({ message: "No boards found for this user" });
-    }
-
-    res.status(200).json({ boards });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(201).json({ message: "Success.", boards });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
-const getBoardById = async (req, res) => {
+const getBoard = async (req, res) => {
   try {
-    const { boardId } = req.params;
+    const id = req.params.id;
 
-    const board = await Board.findByPk(id, {
-      include: [{ model: List, include: [Task] }],
+    if (!id) {
+      return res.status(400).json({
+        message: "Board ID is required.",
+      });
+    }
+
+    let sql = `
+SELECT
+	board.*,
+	(
+	SELECT
+		jsonb_agg (
+			jsonb_build_object (
+				'list_id',
+				list.list_id,
+				'title',
+				list.title,
+				'position',
+				list.POSITION,
+				'tasks',
+				(
+				SELECT
+					jsonb_agg ( jsonb_build_object ( 'task_id', task.task_id, 'title', task.title, 'description', task.description ) ) 
+				FROM
+					tasks task 
+				WHERE
+					task.list_id = list.list_id 
+				) 
+			) 
+		) 
+	FROM
+		lists list 
+	WHERE
+		list.board_id = board.board_id 
+	) AS lists 
+FROM
+	boards board 
+WHERE
+	board.board_id = ${id}
+    `;
+
+    const [result] = await development.query(sql);
+
+    if (result.length > 0) {
+      res.status(200).json({
+        message: "Success.",
+        data: result[0],
+      });
+    } else {
+      return res.status(404).json({
+        message: "Board not found.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error.",
+      error: error.message,
     });
-
-    if (!board) {
-      return res.status(404).json({ message: "Board not found" });
-    }
-
-    res.status(200).json({ board });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-const updateBoard = async (req, res) => {
-  try {
-    const { board_id } = req.params;
-    const { title, description } = req.body;
-
-    const board = await Board.findByPk(board_id);
-    if (!board) {
-      return res.status(404).json({ message: "Board not found" });
-    }
-
-    board.title = title || board.title;
-
-    await board.save();
-
-    res.status(200).json({ message: "Board updated successfully", board });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
-
-const deleteBoard = async (req, res) => {
-  try {
-    const { board_id } = req.params;
-
-    const board = await Board.findByPk(board_id);
-    if (!board) {
-      return res.status(404).json({ message: "Board not found" });
-    }
-
-    await board.destroy();
-
-    res.status(200).json({ message: "Board deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
+const updateBoard = async (erq, res) => {};
+const deleteBoard = async (req, res) => {};
 
 module.exports = {
   createBoard,
-  getProjectBoards,
-  getBoardById,
+  getBoardList,
+  getBoard,
   updateBoard,
   deleteBoard,
 };

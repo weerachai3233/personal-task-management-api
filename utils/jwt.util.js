@@ -7,7 +7,7 @@ const generateToken = (user) => {
     username: user.username,
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
   return token;
 };
 

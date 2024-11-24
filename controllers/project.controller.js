@@ -20,18 +20,18 @@ const createProject = async (req, res) => {
 
 const getProjectList = async (req, res) => {
   try {
-    const { user_id } = req.query;
-    const project = await Project.findAll({
+    const { user_id } = req.user;
+    const projects = await Project.findAll({
       where: {
         user_id: user_id,
       },
     });
 
-    if (!project) {
+    if (!projects) {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    res.status(200).json({ project });
+    res.status(200).json({  projects });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }

@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/board/createBoard:
+ * /api/board:
  *   post:
  *     tags:
  *       - Board
@@ -28,83 +28,11 @@ const router = express.Router();
  *     responses:
  *       200: { description: "Successful" }
  */
-router.post("/createBoard", authenticateJWT, BoardController.createBoard);
+router.post("/", authenticateJWT, BoardController.createBoard);
 
-/**
- * @swagger
- * /api/board/projectBoards:
- *   get:
- *     tags:
- *       - Board
- *     parameters:
- *       - name: project_id
- *         in: query
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200: { description: "Successful" }
- */
-router.get("/projectBoards", authenticateJWT, BoardController.getProjectBoards);
-
-/**
- * @swagger
- * /api/board/${board_id}:
- *   get:
- *     tags:
- *       - Board
- *     parameters:
- *       - name: board_id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200: { description: "Successful" }
- */
-router.get("/:board_id", authenticateJWT, BoardController.getBoardById);
-
-/**
- * @swagger
- * /api/board/${board_id}:
- *   put:
- *     tags:
- *       - Board
- *     parameters:
- *       - name: board_id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *     responses:
- *       200: { description: "Successful" }
- */
-router.put("/:board_id", authenticateJWT, BoardController.updateBoard);
-
-/**
- * @swagger
- * /api/board/{board_id}:
- *   delete:
- *     tags:
- *       - Project
- *     parameters:
- *       - name: board_id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successful
- */
-router.delete("/:board_id", authenticateJWT, BoardController.deleteBoard);
+router.get("/:id", authenticateJWT, BoardController.getBoard);
+router.get("/", authenticateJWT, BoardController.getBoardList);
+router.post("/", authenticateJWT, BoardController.createBoard);
+router.delete("/", authenticateJWT, BoardController.createBoard);
 
 module.exports = router;

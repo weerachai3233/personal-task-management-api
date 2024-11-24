@@ -3,7 +3,7 @@ const { verifyToken } = require("../utils/jwt.util");
 const authenticateJWT = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1];
 
-  console.log('token')
+  console.log("token");
   if (!token) {
     return res.sendStatus(403);
   }
@@ -14,7 +14,6 @@ const authenticateJWT = (req, res, next) => {
   }
 
   req.user = decoded;
-  console.log('next')
   next();
 };
 

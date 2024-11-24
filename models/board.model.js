@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../configs/config").development;
 const Project = require("./project.model");
+const List = require("./list.model");
 
 class Board extends Model {}
 

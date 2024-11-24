@@ -33,12 +33,12 @@ const login = async (req, res) => {
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(400).json({ message: "User not found" });
 
-    // const isMatch = await bcrypt.compare(password, user.password);
-    const isMatch = Password.comparePassword(password, user.password)
-    if (!isMatch)
+    const isMatch = await Password.comparePassword(password, user.password);
+    if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-    const token = JWT.generateToken(user)
+    const token = JWT.generateToken(user);
 
     res.status(200).json({ message: "Login successful", token });
   } catch (err) {

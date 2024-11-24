@@ -9,6 +9,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 const cors = require("cors");
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(
   cors({
@@ -33,7 +34,7 @@ const swaggerOptions = {
     ],
     servers: [
       {
-        url: "http://localhost:3000",
+        url: `http://localhost:${PORT}`,
       },
     ],
     components: {
@@ -66,7 +67,6 @@ app.use("/api/board", boardRoutes);
 app.use("/api/list", listRoutes);
 app.use("/api/task", taskRoutes);
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(

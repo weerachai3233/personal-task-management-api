@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../configs/config").development;
 const Board = require("./board.model");
+const Task = require("./task.model");
 
 class List extends Model {}
 
@@ -45,5 +46,6 @@ List.init(
     underscored: true,
   }
 );
+
 
 module.exports = List;
