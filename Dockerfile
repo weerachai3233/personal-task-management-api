@@ -7,6 +7,9 @@ COPY package*.json ./
 COPY . .
 
 ARG APP_PORT
+ARG ENV_FILE
+
+COPY ${ENV_FILE} .env
 
 RUN yarn install
 

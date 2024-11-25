@@ -7,5 +7,5 @@ services:
       context: .
       args:
         APP_PORT: 3000
-        ENV_FILE: .env
+        ENV_FILE: .env.prod
     command: ["node", "app.js"]

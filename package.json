@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "docker:deploy": "rm -rf api-image.tar && docker-compose -f docker-compose.uat.yml build && docker save -o api-image.tar api-trading-image/uat",
+    "copy": "scp api-image.tar weerachai@167.172.67.72:/home/weerachai/docker-image"
   },
   "keywords": [],
   "author": "",
